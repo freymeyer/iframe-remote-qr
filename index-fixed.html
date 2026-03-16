@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #qr-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-family: sans-serif;
+        }
+        #qr-toggle {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s;
+        }
+        #qr-toggle:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+        #qr-code {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform-origin: bottom right;
+        }
+        #qr-code.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body style="overflow-y:hidden;">
+<div style="width:100%;height:100%;overflow:hidden;">
+    <iframe 
+        id="camp_frame"
+        src=""
+        data-breakpoint="4000">
+    </iframe>
+</div>
+
+<!-- QR Code Overlay -->
+<div id="qr-container">
+    <button id="qr-toggle">Hide Remote Control</button>
+    <div id="qr-code"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    // Parse URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var campId = urlParams.get('campId') || '13849';
+    var uuid = urlParams.get('uuid') || 'ABC6F672-78FF-4122-8902-2D5EAC45772A';
+
+    // Update iframe src dynamically
+    var iframe = document.getElementById('camp_frame');
+    iframe.src = "https://samcmsuser.s3.amazonaws.com/camp/" + campId + "/index.html";
+
+    // Set QR Code URL dynamically
+    var qrUrl = "https://www.runsam.com/layouts/rc/" + campId + "/" + uuid;
+    var qrCodeElement = document.getElementById("qr-code");
+    
+    // Generate QR Code
+    new QRCode(qrCodeElement, {
+        text: qrUrl,
+        width: 150,
+        height: 150,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.M
+    });
+
+    // Toggle logic
+    var toggleBtn = document.getElementById("qr-toggle");
+    var isVisible = true;
+    
+    toggleBtn.addEventListener('click', function() {
+        isVisible = !isVisible;
+        if (isVisible) {
+            qrCodeElement.classList.remove('hidden');
+            toggleBtn.textContent = 'Hide Remote Control';
+        } else {
+            qrCodeElement.classList.add('hidden');
+            toggleBtn.textContent = 'Show Remote Control';
+        }
+    });
+</script>
+
+<script src="index-fixed.js"></script>
+</body>
+</html>

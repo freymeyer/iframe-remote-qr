@@ -1,0 +1,13 @@
+[build]
+  # 1. No build command
+  command = "# no build command needed"
+  
+  # 2. The deployment directory (root directory '.')
+  publish = "."
+
+# 3. Route mapping: serve index-fixed.html when someone visits the root (/)
+[[redirects]]
+  from = "/"
+  to = "/index-fixed.html"
+  status = 200
+  force = true

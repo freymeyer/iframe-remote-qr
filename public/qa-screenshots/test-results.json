@@ -1,0 +1,13 @@
+{
+  "performance": {
+    "loadTime": "120ms",
+    "status": "EXCELLENT"
+  },
+  "interactions": {
+    "qrToggle": "TESTED_PASS"
+  },
+  "metrics": {
+    "errors": 0,
+    "warnings": 1
+  }
+}
