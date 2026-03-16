@@ -85,8 +85,9 @@
   function onResize() {
 
     var now = +new Date,
-        winWidth  = win.innerWidth,
-        winHeight = win.innerHeight,
+        container = iframe.parentElement,
+        winWidth  = container.clientWidth || win.innerWidth,
+        winHeight = container.clientHeight || win.innerHeight,
 
         noResizing = winWidth > BREAKPOINT,
 
