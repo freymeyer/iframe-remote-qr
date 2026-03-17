@@ -38,12 +38,15 @@
 		NATIVE_WIDTH  = parseInt(iframe.getAttribute('data-native-width'),  10);
 		NATIVE_HEIGHT = parseInt(iframe.getAttribute('data-native-height'), 10);
 	  } else {
-		// Fall back to reading the iframe's natural scroll dimensions
-		// This only works same-origin, but for cross-origin
-		// we read the iframe element's own offsetWidth/Height
-		// before any scaling is applied
-		NATIVE_WIDTH  = iframe.offsetWidth;
-		NATIVE_HEIGHT = iframe.offsetHeight;
+		// If no attributes, rely on the orientation defaults previously set
+		// or offsetWidth/Height if they were somehow explicitly sized
+		var currentOrientation = iframe.getAttribute('data-orientation') || 'landscape';
+		var defW = currentOrientation === 'portrait' ? 1080 : 1920;
+		var defH = currentOrientation === 'portrait' ? 1920 : 1080;
+		
+		// Fallback to our orientation defaults
+		NATIVE_WIDTH  = iframe.offsetWidth || defW;
+		NATIVE_HEIGHT = iframe.offsetHeight || defH;
 	  }
 	  onResize();
 	});
@@ -52,11 +55,15 @@
   /**
    * ADDED:
    * Read the native resolution of the layout.
-   * This allows proper 16:9 scaling for things like
-   * 1920x1080 or 3840x2160 layouts.
+   * This allows proper 16:9 or 9:16 scaling for things like
+   * 1920x1080, 1080x1920, or 3840x2160 layouts.
    */
-  NATIVE_WIDTH  = parseInt(iframe.getAttribute('data-native-width')  || 1920, 10);
-  NATIVE_HEIGHT = parseInt(iframe.getAttribute('data-native-height') || 1080, 10);
+  var orientation = iframe.getAttribute('data-orientation') || 'landscape';
+  var defaultWidth = orientation === 'portrait' ? 1080 : 1920;
+  var defaultHeight = orientation === 'portrait' ? 1920 : 1080;
+
+  NATIVE_WIDTH  = parseInt(iframe.getAttribute('data-native-width')  || defaultWidth, 10);
+  NATIVE_HEIGHT = parseInt(iframe.getAttribute('data-native-height') || defaultHeight, 10);
 
 
   /**

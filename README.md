@@ -22,9 +22,10 @@ It renders a meticulously scaled `iframe` containing campaign layouts without in
 
 The architecture is entirely client-side and dynamically controlled by URL parameters. 
 
-When the player loads, `index-fixed.js` parses the browser's URL query string for two critical parameters:
+When the player loads, `index-fixed.js` parses the browser's URL query string for critical parameters:
 *   `campId` (Campaign ID)
 *   `uuid` (Unique Identifier for the device/session)
+*   `orientation` (Optional: 'landscape' or 'portrait')
 
 **Dynamic Routing:**
 *   **Iframe Source:** The `campId` is injected into the iframe URL to load the specific campaign content:
@@ -42,13 +43,13 @@ To use the player, simply append the desired `campId` and `uuid` to your deploym
 
 **URL Structure:**
 ```
-https://<your-domain>/index-fixed.html?campId=<YOUR_CAMP_ID>&uuid=<YOUR_UUID>
+https://<your-domain>/index-fixed.html?campId=<YOUR_CAMP_ID>&uuid=<YOUR_UUID>&orientation=<landscape|portrait>
 ```
 
 **Example:**
-If your campaign ID is `12345` and the screen's UUID is `abc-987`, the URL would be:
+If your campaign ID is `12345`, the screen's UUID is `abc-987`, and the display is portrait, the URL would be:
 ```
-https://<your-domain>/index-fixed.html?campId=12345&uuid=abc-987
+https://<your-domain>/index-fixed.html?campId=12345&uuid=abc-987&orientation=portrait
 ```
 Upon loading this URL:
 1. The iframe will display the campaign from the AWS S3 bucket for `12345`.

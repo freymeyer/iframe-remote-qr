@@ -155,13 +155,23 @@
     var urlParams = new URLSearchParams(window.location.search);
     var campId = urlParams.get('campId') || '13849';
     var uuid = urlParams.get('uuid') || 'ABC6F672-78FF-4122-8902-2D5EAC45772A';
+    var orientation = urlParams.get('orientation') || 'landscape';
 
     // Update iframe src dynamically
     var iframe = document.getElementById('camp_frame');
     iframe.src = "https://samcmsuser.s3.amazonaws.com/camp/" + campId + "/index.html";
+    iframe.setAttribute('data-orientation', orientation);
+    
+    if (orientation === 'portrait') {
+        // Adjust breakpoint for portrait if necessary
+        iframe.setAttribute('data-breakpoint', '2000'); 
+    }
 
     // Set QR Code URL dynamically
     var qrUrl = "https://www.runsam.com/layouts/rc/" + campId + "/" + uuid;
+    if (orientation === 'portrait') {
+        qrUrl += "?orientation=portrait";
+    }
     var qrCodeElement = document.getElementById("qr-code");
     
     // Generate QR Code
